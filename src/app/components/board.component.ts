@@ -1,31 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from './board.service';
+import { Cell, GameService } from './board.service';
 
 @Component({
   selector: 'app-game-board',
   styleUrls: ['./board.component.css'],
-  template: `<div class="game-board">
-    <div
-      *ngFor="let cell of cells"
-      (click)="makeMove(cell.row, cell.col)"
-      class="cell"
-    >
-      {{ cell.value }}
-    </div>
-  </div>`,
+  templateUrl: 'board.component.html',
 })
 export class GameBoardComponent implements OnInit {
-  cells: any[] = []
+  gameOver = false;
+  cells: Cell[] = [];
+  currentPlayer = 'X';
 
   constructor(private gameService: GameService) {}
 
   ngOnInit() {
     this.gameService.gameState$.subscribe((state) => {
+      this.currentPlayer = state.currentPlayer;
       this.cells = state.board;
+      this.gameOver = state.gameOver;
     });
   }
 
   makeMove(row: number, col: number) {
-    this.gameService.makeMove(row, col);
+    if (!this.gameOver) {
+      this.gameService.makeMove(row, col);
+    }
   }
 }

@@ -1,0 +1,16 @@
+<ng-template #gameOverTemplate>
+  game over! {{ currentPlayer }}
+</ng-template>
+
+<ng-container>
+  <div *ngIf="!gameOver; else gameOverTemplate">
+    game in play.
+  </div>
+
+  <p>current player: {{ currentPlayer }}</p>
+</ng-container>
+<div class="game-board">
+  <div *ngFor="let cell of cells" (click)="makeMove(cell.row, cell.col)" class="cell">
+    {{ cell.value }}
+  </div>
+</div>
