@@ -1,7 +1,8 @@
 import { StateModel } from './board.service';
 
-export const defaultBoardState: StateModel = {
+export const NewBoardState: StateModel = {
   currentPlayer: 'X',
+  gameOver: false,
   board: [
     { row: 0, col: 0, value: '' },
     { row: 0, col: 1, value: '' },
@@ -13,5 +14,4 @@ export const defaultBoardState: StateModel = {
     { row: 2, col: 1, value: '' },
     { row: 2, col: 2, value: '' },
   ],
-  gameOver: false,
 };

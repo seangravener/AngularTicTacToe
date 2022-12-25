@@ -8,8 +8,8 @@ import { Cell, GameService } from './board.service';
 })
 export class GameBoardComponent implements OnInit {
   gameOver = false;
-  cells: Cell[] = [];
   currentPlayer = 'X';
+  cells: Cell[] = [];
 
   constructor(private gameService: GameService) {}
 

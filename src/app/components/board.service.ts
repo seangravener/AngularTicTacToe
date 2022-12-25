@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { defaultBoardState } from './constants';
+import { NewBoardState } from './constants';
 
 type Player = 'X' | 'O' | '';
 export type Cell = { row: number; col: number; value: Player };
@@ -14,32 +14,28 @@ export type StateModel = {
   providedIn: 'root',
 })
 export class GameService {
-  private gameState = new BehaviorSubject<StateModel>(defaultBoardState);
+  private gameState = new BehaviorSubject<StateModel>(NewBoardState);
   gameState$ = this.gameState.asObservable();
 
   makeMove(row: number, col: number) {
-    let state = this.gameState.value;
+    let state = () => this.gameState.value;
+    const toPosition = row * 3 + col;
+    const currentValue = state().board[toPosition].value;
 
-    if (!state.gameOver) {
-      state = this.updateBoard(row, col, state);
-      this.updateGameOver(state);
-      this.updateCurrentPlayer(this.gameState.value);
+    if (!currentValue && !state().gameOver) {
+      this.updateBoard(row, col, state());
+      this.updateGameOver(state());
+      this.updateCurrentPlayer(state());
     }
   }
 
   private updateBoard(row: number, col: number, state: StateModel) {
-    const currentPosition = row * 3 + col;
-    const currentValue = state.board[currentPosition].value;
-
-    if (!currentValue) {
-      state.board[currentPosition].value = state.currentPlayer;
-    }
-
-    return state;
+    state.board[row * 3 + col].value = state.currentPlayer;
+    this.gameState.next(state);
   }
 
   private updateCurrentPlayer(state: StateModel) {
-    return (state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X');
+    state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
   }
 
   private checkGameOver(state: StateModel) {
@@ -69,10 +65,10 @@ export class GameService {
       const boardA = board[a].value;
 
       if (boardA && boardA === board[b].value && boardA === board[c].value) {
-        console.log('winner!', boardA);
         return boardA;
       }
     }
+
     return null;
   }
 }
