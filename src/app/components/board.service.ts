@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NewBoardState, WinningCombos } from './constants';
+import { newBoardState, WinningCombos } from './constants';
 
 type Player = 'X' | 'O' | 'XO' | '';
 export type Cell = { row: number; col: number; value: Player };
@@ -14,7 +14,7 @@ export type StateModel = {
   providedIn: 'root',
 })
 export class GameService {
-  private gameState = new BehaviorSubject<StateModel>(NewBoardState);
+  private gameState = new BehaviorSubject<StateModel>(newBoardState());
   gameState$ = this.gameState.asObservable();
 
   makeMove(row: number, col: number) {
@@ -32,6 +32,10 @@ export class GameService {
     }
 
     this.gameState.next(state);
+  }
+
+  resetGame() {
+    this.gameState.next(newBoardState());
   }
 
   private updateBoard(row: number, col: number, state: StateModel) {

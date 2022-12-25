@@ -31,6 +31,10 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     }
   }
 
+  resetGame() {
+    this.gameService.resetGame();
+  }
+
   ngOnDestroy(): void {
     for (let sub of this.subs) {
       sub.unsubscribe;
