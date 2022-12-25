@@ -22,7 +22,7 @@ h1 {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-content: flex-start;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .flex-item:nth-child(1) {
@@ -64,5 +64,20 @@ h1 {
 }
 
 .cell:hover {
+  cursor: pointer;
+}
+
+.button {
+  text-align: center;
+  margin-top: 12px;
+}
+
+button {
+  background: transparent;
+  font-family: "Rocher";
+  font-size: 28px;
+  border: none;
+}
+button:hover {
   cursor: pointer;
 }
