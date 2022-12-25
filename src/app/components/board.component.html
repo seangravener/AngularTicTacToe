@@ -19,7 +19,13 @@
 <ng-template #gameOverTemplate>
   <div class="flex-container">
     <div class="flex-item player-indicator">
-      {{ currentPlayer }} wins!
+      <ng-container *ngIf="currentPlayer !== 'XO'; else showTieGame">
+        {{ currentPlayer }} Wins!
+      </ng-container>
+
+      <ng-template #showTieGame>
+        Tie Game!
+      </ng-template>
     </div>
     <div class="flex-item status-indicator">
       Game over

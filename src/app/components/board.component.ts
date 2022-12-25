@@ -1,29 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Cell, GameService } from './board.service';
 
 @Component({
   selector: 'app-game-board',
   styleUrls: ['./board.component.css'],
-  templateUrl: 'board.component.html'
+  templateUrl: 'board.component.html',
 })
-export class GameBoardComponent implements OnInit {
+export class GameBoardComponent implements OnInit, OnDestroy {
+  subs: Subscription[] = [];
   gameOver = false;
-  currentPlayer = 'X';
   cells: Cell[] = [];
+  currentPlayer = 'X';
 
   constructor(private gameService: GameService) {}
 
   ngOnInit() {
-    this.gameService.gameState$.subscribe((state) => {
-      this.currentPlayer = state.currentPlayer;
-      this.cells = state.board;
-      this.gameOver = state.gameOver;
-    });
+    this.subs.push(
+      this.gameService.gameState$.subscribe((state) => {
+        this.currentPlayer = state.currentPlayer;
+        this.gameOver = state.gameOver;
+        this.cells = state.board;
+      })
+    );
   }
 
   makeMove(row: number, col: number) {
     if (!this.gameOver) {
       this.gameService.makeMove(row, col);
+    }
+  }
+
+  ngOnDestroy(): void {
+    for (let sub of this.subs) {
+      sub.unsubscribe;
     }
   }
 }
