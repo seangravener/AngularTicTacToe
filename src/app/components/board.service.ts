@@ -46,7 +46,6 @@ export class GameService {
 
   private checkWinGame(state: StateModel) {
     const winner = this.calculateWinner(state);
-
     if (winner) {
       state.currentPlayer = winner;
       state.gameOver = true;
