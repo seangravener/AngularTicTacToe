@@ -1,16 +1,28 @@
-<ng-template #gameOverTemplate>
-  game over! {{ currentPlayer }}
-</ng-template>
-
-<ng-container>
-  <div *ngIf="!gameOver; else gameOverTemplate">
-    game in play.
+<header>
+  <h1 class="title">Tic Tac Toe</h1>
+  <div class="flex-container" *ngIf="!gameOver; else gameOverTemplate">
+    <div class="flex-item player-indicator">
+      {{ currentPlayer }}'s turn
+    </div>
+    <div class="flex-item status-indicator" *ngIf="!gameOver">
+      Game in play
+    </div>
   </div>
+</header>
 
-  <p>current player: {{ currentPlayer }}</p>
-</ng-container>
 <div class="game-board">
   <div *ngFor="let cell of cells" (click)="makeMove(cell.row, cell.col)" class="cell">
     {{ cell.value }}
   </div>
 </div>
+
+<ng-template #gameOverTemplate>
+  <div class="flex-container">
+    <div class="flex-item player-indicator">
+      {{ currentPlayer }} wins!
+    </div>
+    <div class="flex-item status-indicator">
+      Game over
+    </div>
+  </div>
+</ng-template>

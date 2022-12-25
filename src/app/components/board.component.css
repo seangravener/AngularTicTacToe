@@ -1,13 +1,68 @@
+footer,
+header {
+  font-family: "Rocher";
+}
+
+h1 {
+  font-size: 68px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.player-indicator {
+  font-size: 48px;
+}
+.status-indicator {
+  font-size: 32px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: flex-start;
+  align-items: flex-end;
+}
+
+.flex-item:nth-child(1) {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+}
+
+.flex-item:nth-child(2) {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+}
+
 .game-board {
+  font-family: "Rocher";
+  text-align: center;
+  font-size: 48px;
+
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  color: var(--text-color);
+  background: var(--board-gradient);
+  border: 6px solid var(--board-border);
+  border-radius: 10px;
+
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
 .cell {
+  border: 6px solid var(--board-border);
+  border-radius: 2px;
+  font-size: 2em;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 32px;
-  border: 1px solid #ccc;
+  align-items: center;
+}
+
+.cell:hover {
+  cursor: pointer;
 }

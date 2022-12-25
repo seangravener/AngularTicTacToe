@@ -4,7 +4,7 @@ import { Cell, GameService } from './board.service';
 @Component({
   selector: 'app-game-board',
   styleUrls: ['./board.component.css'],
-  templateUrl: 'board.component.html',
+  templateUrl: 'board.component.html'
 })
 export class GameBoardComponent implements OnInit {
   gameOver = false;
