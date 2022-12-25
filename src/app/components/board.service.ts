@@ -52,11 +52,6 @@ export class GameService {
       state.gameOver = true;
     }
 
-    if (winner === 'XO') {
-      state.currentPlayer = 'XO';
-      state.gameOver = true;
-    }
-
     return state;
   }
 
