@@ -26,8 +26,11 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   makeMove(row: number, col: number) {
+    const sound = new Audio('/assets/fx/knock-and-shake.ogg');
     if (!this.gameOver) {
-      this.gameService.makeMove(row, col);
+      sound.play().then(() => {
+        this.gameService.makeMove(row, col);
+      });
     }
   }
 
