@@ -5,9 +5,9 @@ import { newBoardState, WinningCombos } from './constants';
 type Player = 'X' | 'O' | 'XO' | '';
 export type Cell = { row: number; col: number; value: Player };
 export type StateModel = {
-  currentPlayer: Player;
   board: Cell[];
   gameOver: boolean;
+  currentPlayer: Player;
 };
 
 @Injectable({
