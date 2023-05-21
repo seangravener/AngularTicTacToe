@@ -1,38 +1,42 @@
-<header>
-  <h1 class="title">Tic Tac Toe</h1>
-  <div class="flex-container" *ngIf="!gameOver; else gameOverTemplate">
-    <div class="flex-item player-indicator">
-      {{ currentPlayer }}'s turn
+<ng-container *ngIf="gameState$ | async as state">
+  <header>
+    <h1 class="title">Tic Tac Toe</h1>
+    <div class="flex-c
+
+    ontainer" *ngIf="!state.gameOver; else gameOverTemplate">
+      <div class="flex-item player-indicator">
+        {{ state.currentPlayer }}'s turn
+      </div>
+      <div class="flex-item status-indicator" *ngIf="!state.gameOver">
+        Game in play
+      </div>
     </div>
-    <div class="flex-item status-indicator" *ngIf="!gameOver">
-      Game in play
-    </div>
-  </div>
-</header>
+  </header>
 
-<div class="game-board">
-  <div *ngFor="let cell of cells" (click)="makeMove(cell.row, cell.col)" class="cell">
-    {{ cell.value }}
-  </div>
-</div>
-
-<div class="button">
-  <button (click)="resetGame()">Reset Game</button>
-</div>
-
-<ng-template #gameOverTemplate>
-  <div class="flex-container">
-    <div class="flex-item player-indicator">
-      <ng-container *ngIf="currentPlayer !== 'XO'; else showTieGame">
-        {{ currentPlayer }} Wins!
-      </ng-container>
-
-      <ng-template #showTieGame>
-        Tie Game!
-      </ng-template>
-    </div>
-    <div class="flex-item status-indicator">
-      Game over
+  <div class="game-board">
+    <div *ngFor="let cell of state.board" (click)="makeMove(cell.row, cell.col)" class="cell">
+      {{ cell.value }}
     </div>
   </div>
-</ng-template>
+
+  <div class="button">
+    <button (click)="resetGame()">Reset Game</button>
+  </div>
+
+  <ng-template #gameOverTemplate>
+    <div class="flex-container">
+      <div class="flex-item player-indicator">
+        <ng-container *ngIf="state.currentPlayer !== 'XO'; else showTieGame">
+          {{ state.currentPlayer }} Wins!
+        </ng-container>
+
+        <ng-template #showTieGame>
+          Tie Game!
+        </ng-template>
+      </div>
+      <div class="flex-item status-indicator">
+        Game over
+      </div>
+    </div>
+  </ng-template>
+</ng-container>

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Cell, GameService } from './board.service';
+import { Observable, Subscription, distinctUntilChanged, tap } from 'rxjs';
+import { Cell, GameService, StateModel } from './board.service';
 
 @Component({
   selector: 'app-game-board',
@@ -8,32 +8,24 @@ import { Cell, GameService } from './board.service';
   templateUrl: 'board.component.html',
 })
 export class GameBoardComponent implements OnInit, OnDestroy {
-  subs: Subscription[] = [];
-  gameOver = false;
-  cells: Cell[] = [];
-  currentPlayer = 'X';
+  gameState$: Observable<StateModel>;
+  gameOverSounded = false;
 
   constructor(private gameService: GameService) {
-    // preload
+    this.gameState$ = this.gameService.gameState$.pipe(
+      tap((state: StateModel) => (this.gameOverSounded = state.gameOver)),
+      tap((state: StateModel) => this.playFx(state))
+    );
   }
 
   startGame() {}
 
-  ngOnInit() {
-    this.subs.push(
-      this.gameService.gameState$.subscribe((state) => {
-        this.currentPlayer = state.currentPlayer;
-        this.gameOver = state.gameOver;
-        this.cells = state.board;
-        this.playFx();
-      })
-    );
-  }
+  ngOnInit() {}
 
-  private playFx() {
-    const { audioPlayer, audioGameOver } = this.getAudio();
+  private playFx(state: StateModel) {
+    const { audioPlayer, audioGameOver } = this.getAudio(state);
 
-    if (!this.gameOver) {
+    if (!state.gameOver) {
       return audioPlayer.play();
     }
 
@@ -41,9 +33,9 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   makeMove(row: number, col: number) {
-    if (!this.gameOver) {
+    // if (!this.gameOverSounded) {
       this.gameService.makeMove(row, col);
-    }
+    // }
   }
 
   resetGame() {
@@ -51,18 +43,18 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    for (let sub of this.subs) {
-      sub.unsubscribe;
-    }
+    // for (let sub of this.subs) {
+    //   sub.unsubscribe;
+    // }
   }
 
   // @todo use Angular's ResolverService to preload audio files
   // eg. https://stackoverflow.com/questions/58528417/how-to-preload-audio-files-in-angular-project
-  private getAudio() {
+  private getAudio(state: StateModel) {
     const audioGameOver = new Audio('/assets/fx/win.ogg');
     const audioX = new Audio('/assets/fx/plop-x.ogg');
     const audioO = new Audio('/assets/fx/plop-y.ogg');
-    const audioPlayer = this.currentPlayer === 'X' ? audioX : audioO;
+    const audioPlayer = state.currentPlayer === 'X' ? audioX : audioO;
 
     return { audioPlayer, audioGameOver };
   }

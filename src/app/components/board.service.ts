@@ -40,12 +40,12 @@ export class GameService {
 
   private updateBoard(row: number, col: number, state: StateModel) {
     state.board[row * 3 + col].value = state.currentPlayer;
-    return state;
+    return { ...state };
   }
 
   private updateCurrentPlayer(state: StateModel) {
     state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
-    return state;
+    return { ...state };
   }
 
   private checkWinGame(state: StateModel) {
@@ -55,7 +55,7 @@ export class GameService {
       state.gameOver = true;
     }
 
-    return state;
+    return { ...state };
   }
 
   private calculateWinner(state: StateModel) {
