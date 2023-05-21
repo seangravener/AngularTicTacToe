@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { newBoardState, WinningCombos } from './constants';
+import { SoundService } from './sound.service';
 
 type Player = 'X' | 'O' | 'XO' | '';
 export type Cell = { row: number; col: number; value: Player };
@@ -16,6 +17,8 @@ export type StateModel = {
 export class GameService {
   private gameState = new BehaviorSubject<StateModel>(newBoardState());
   gameState$ = this.gameState.asObservable();
+
+  constructor(private soundService: SoundService) {}
 
   makeMove(row: number, col: number) {
     let state = { ...this.gameState.value };
@@ -53,6 +56,8 @@ export class GameService {
     if (winner) {
       state.currentPlayer = winner;
       state.gameOver = true;
+
+      // this.soundService.playFx('gameover')
     }
 
     return { ...state };
